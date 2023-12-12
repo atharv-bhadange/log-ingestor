@@ -93,3 +93,24 @@ func GetLogById(c *fiber.Ctx) error {
 		Data:    log,
 	})
 }
+
+func GetLogsByLevel(c *fiber.Ctx) error {
+	level := c.Params("level")
+
+	logs, err := service.GetLogByLevel(level)
+
+	if err != nil {
+		return c.Status(400).JSON(model.Response{
+			Status:  400,
+			Message: "Bad request.",
+			Data:    nil,
+		})
+	}
+
+	return c.Status(200).JSON(model.Response{
+		Status:  200,
+		Message: "Logs fetched successfully",
+		Data:    logs,
+	})
+}
+

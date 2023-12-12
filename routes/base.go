@@ -14,4 +14,7 @@ func Setup(app *fiber.App) {
 	app.Get("/log", controller.GetLog)
 
 	app.Get("/log/:id", controller.GetLogById)
+
+	app.Get("/log/level/:level", controller.GetLogsByLevel)
+
 }
