@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/atharv-bhadange/log-ingestor/db"
 	"github.com/atharv-bhadange/log-ingestor/model"
 )
@@ -30,7 +32,7 @@ func GetLog() ([]model.Log, error) {
 }
 
 func GetLogById(id int) (model.Log, error) {
-	
+
 	var log model.Log
 
 	tx := db.Db.Where("id = ?", id).First(&log)
@@ -40,4 +42,18 @@ func GetLogById(id int) (model.Log, error) {
 	}
 
 	return log, nil
+}
+
+func GetLogByLevel(level string) ([]model.Log, error) {
+	if level == "" {
+		return nil, errors.New("Log level is required")
+	}
+
+	var logs []model.Log
+	tx := db.Db.Where("level = ?", level).Order("id").Find(&logs)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return logs, nil
 }
